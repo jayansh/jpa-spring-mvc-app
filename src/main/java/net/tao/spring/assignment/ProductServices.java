@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductServices {
 	@Autowired
 	private ProductRepository productRepository;
@@ -21,16 +22,19 @@ public class ProductServices {
 		return productRepository.findById(productId);
 	}
 
-	public Optional<Product> getProductByName(String productName) {
-		return productRepository.findByName(productName);
-	}
+	/*
+	 * public Optional<Product> getProductByName(String productName) { return
+	 * productRepository.findByName(productName); }
+	 */
 
-	public void addProduct(Product product) {
+	public String addProduct(Product product) {
 		productRepository.save(product);
+		return "success";
 	}
 
-	public void delete(String productId) {
+	public String delete(String productId) {
 		productRepository.deleteById(productId);
+		return "success";
 	}
 
 	public String updateProduct(String productId, String productName, String description) {
@@ -44,6 +48,11 @@ public class ProductServices {
 		} else {
 			return "noupdate";
 		}
-
 	}
+
+	public String save(Product product) {
+		productRepository.save(product);
+		return "success";
+	}
+
 }
