@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.19/css/dataTables.jqueryui.min.css"></script>
+		<script src="https://cdn.datatables.net/buttons/1.5.6/css/buttons.jqueryui.min.css"></script>
+	</head>
+	<body>
+		<h3>Products</h3>
+		<table id="listproducts" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th/>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="prod: ${allProducts}">
+                <td th:text="${prod.productId}">${prod.productId}</td>
+                <td th:text="${prod.productName}">${prod.productName}</td>
+                <td th:text="${prod.productName}">${prod.description}</td>
+                <td><input type="button" value="Delete" /></td>
+            </tr>
+            
+        </tbody>
+    </table>
+	</body>
+</html>
