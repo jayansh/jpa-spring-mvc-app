@@ -1,7 +1,9 @@
 package net.tao.spring.assignment;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 
@@ -9,18 +11,24 @@ import javax.persistence.Id;
  *
  */
 @Entity
+@Table(name = "product")
 public class Product {
 	@Id
+	@Column(name = "product_id")
 	private String productId;
+	@Column(name = "product_name")
 	private String productName;
+	@Column(name = "description")
 	private String description;
+	@Column(name = "status")
 	private String status;
 
-	protected Product() {
+	public Product() {
 
 	}
 
 	public Product(String productId, String productName, String description, String status) {
+		super();
 		this.productId = productId;
 		this.productName = productName;
 		this.description = description;
