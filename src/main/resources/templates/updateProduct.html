@@ -1,19 +1,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdn.datatables.net/1.10.19/css/dataTables.jqueryui.min.css"></script>
-		<script src="https://cdn.datatables.net/buttons/1.5.6/css/buttons.jqueryui.min.css"></script>
-	</head>
+<head>
+	<script	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<link rel="stylesheet"	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+        $(".delete-product").click(function(){
+        	var productId = $("input[name=productId]").val()
+        	$("#productForm").attr('action', '/deleteProduct');
+            $("#productForm").submit();
+        });
+        $(".cancel-action").click(function(){
+        	var url = "/";
+            $(location).attr('href',url);
+        });
+	});
+	</script>
+</head>
 	<body>
 		<h3>Update Product</h3>
-		<form action="#" th:action="@{/updateProduct}" th:object="${product}" method="post">
-    		<p>Product Id: <input type="text" th:field="*{productId}" /></p>
+		<form action="#" th:action="@{/updateProduct}" th:object="${product}" method="post" name="productForm" id="productForm">
+    		<p>Product Id: <input type="text" th:field="*{productId}" readonly/></p>
         	<p>Name: <input type="text" th:field="*{productName}" /></p>
+        	<p>Status: <select th:field="*{status}">
+        			<option value="Created" >Created</option>
+        			<option value="Approved">Approve</option>
+        			<option value="Available">Available</option>
+        			<option value="NotAvailable">NotAvailable</option>
+        		</select></p>
         	<p>Description: <input type="text" th:field="*{description}" /></p>
-        	<p><input type="submit" value="Edit" /> <input type="reset" value="Cancel" /></p>
+        	<p><input type="submit" value="Done" /> 
+        		<input type="reset" value="Cancel" class="cancel-action" />
+        		<input  type="button" value="Delete" class="delete-product"/></p>
     	</form>
 	</body>
 </html>

@@ -1,32 +1,83 @@
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
-  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="https://cdn.datatables.net/1.10.19/css/dataTables.jqueryui.min.css"></script>
-		<script src="https://cdn.datatables.net/buttons/1.5.6/css/buttons.jqueryui.min.css"></script>
-	</head>
-	<body>
+<head>
+<!-- script
+  src="http://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script-->
+<!-- script
+  src="http://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script-->
+ 
+ <script
+	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+	integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+	crossorigin="anonymous"></script>
+<!-- script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+	integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+	crossorigin="anonymous"></script-->
+<!-- script
+	src="https://cdn.datatables.net/buttons/1.5.6/css/buttons.jqueryui.min.css"></script-->
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+
+<script type="text/javascript" charset="utf8"
+	href="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#menu").menu();
+	});
+// 	$(document).ready( function () {
+// 	    $('#listproducts').DataTable();
+// 	} );
+
+
+    $(document).ready(function(){
+        $(".edit-row").click(function(){
+            var productId = $(this).attr("field");
+            var url = "/updateProduct?productId="+productId;
+            $(location).attr('href',url);
+        });
+    });    
+</script>
+<style>
+.ui-menu {
+	width: 150px;
+}
+</style>
+</head>
+<body>
+	<div class="ui-widget">
+		<ul id="menu" >
+			<li>
+				<div><a href = "#">List Products</a></div>
+			</li>
+			<li><div><a href="/addProduct">Add Product</a></div></li>
+		</ul>
+
 		<h3>Products</h3>
-		<table id="listproducts" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Product Id</th>
-                <th>Product Name</th>
-                <th>Description</th>
-                <th/>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="prod: ${allProducts}">
-                <td th:text="${prod.productId}">${prod.productId}</td>
-                <td th:text="${prod.productName}">${prod.productName}</td>
-                <td th:text="${prod.productName}">${prod.description}</td>
-                <td><input type="button" value="Delete" /></td>
-            </tr>
-            
-        </tbody>
-    </table>
-	</body>
+		<table id="listproducts" class="table table-hover">
+			<thead>
+				<tr>
+					<th>Product Id</th>
+					<th>Product Name</th>
+					<th>Status</th>
+					<th />
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="prod,itemStat: ${allProducts}">
+					<input type="hidden" id="productId" name="productId" th:value="${prod.productId}"></input>
+					<td th:text="${prod.productId}">${prod.productId}</td>
+					<td th:text="${prod.productName}">${prod.productName}</td>
+					<td th:text="${prod.status}">${prod.status}</td>
+					<td><input th:field="*{allProducts[__${itemStat.index}__].productId}" type="button" value="Edit" class="edit-row"/></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</body>
 </html>

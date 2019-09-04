@@ -37,19 +37,6 @@ public class ProductServices {
 		return "success";
 	}
 
-	public String updateProduct(String productId, String productName, String description) {
-		Optional<Product> products = getProductById(productId);
-		if (products.isPresent()) {
-			Product product = products.get();
-			product.setProductName(productName);
-			product.setDescription(description);
-			productRepository.save(product);
-			return "success";
-		} else {
-			return "noupdate";
-		}
-	}
-
 	public String save(Product product) {
 		productRepository.save(product);
 		return "success";

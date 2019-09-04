@@ -30,9 +30,10 @@ public class WebController {
     }
 
     @PostMapping("/addProduct")
-	public void addProduct(@ModelAttribute Product product, Model model) {
+	public String addProduct(@ModelAttribute Product product, Model model) {
 		String result = productServices.addProduct(product);
 		model.addAttribute("result", result);
+		return "redirect:/";
 	}
 
 	@GetMapping(value = "/updateProduct")
@@ -45,9 +46,17 @@ public class WebController {
 	}
 
 	@PostMapping(value = "/updateProduct")
-	public void updateProduct(@RequestParam(name = "productId", required = true) String productId
+	public String updateProduct(@RequestParam(name = "productId", required = true) String productId
 			,@ModelAttribute Product product, Model model) {
 		String result = productServices.save(product);
 		model.addAttribute("result", result);
+		return "redirect:/";
+	}
+	
+	@PostMapping(value = "/deleteProduct")
+	public String deleteProduct(@RequestParam(name = "productId", required = true) String productId
+			,@ModelAttribute Product product, Model model) {
+		productServices.delete(productId);
+		return "redirect:/";
 	}
 }
