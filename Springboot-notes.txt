@@ -1,0 +1,163 @@
+SPRING BOOT
+
+
+Summary 02-09-2019
+
+Spring Boot makes it easy to create stand-alone, production-grade Spring-base Applications.
+--> Need very less  Configurarion
+
+spring-boot-starter-parent
+	- Special started provides useful maven defaults
+	- dependency-management without version tag.
+
+spring-boot-starter-web
+	- for web application
+
+$mvn depenedency:tree
+	-command prints a tree representation of project dependencies
+
+@RestController
+	-stereotype annotation
+	-web controller handles incoming requests.
+@RequestMapping
+	-provides routing information
+
+@EnableAutoConfiguration
+	-tells Spring boot to "guess" how you want to configure Spring based on added dependencies.
+	-e.g. spring-boot-starter-web added Tomcat and Spring MVC, the auto configuration assumes that we are developing a web application and setup spring accordingly.
+	
+
+-->main method is entry point, like any java -jar application.
+-->main method delegates to Spring Boot’s SpringApplication class by calling run. SpringApplication bootstraps application, starting Spring, which, in turn, starts the auto-configured Tomcat web server.
+
+Don't want to use spring-boot-starter-parent POM, use own corporated standart parent or may prefer to explicitly declare all Maven configuration.
+	--Without spring-boot-starter-parent, keep the benefit of the dependency management (but not the plugin management) by using a scope=import dependency.
+
+Many predefined Starters like spring-boot-starter-data-jpa if want to get started using Spring and JPA for database access, include the 
+dependency in project.
+
+@SpringBootApplication - placed in main class
+
+@Configuration, used with configuration class.
+
+@Import - to import additional configuration classes.
+
+@ComponentScan - pick all spring components automatically including @Configuration
+
+@ImportResource - to load xml configuration files.
+
+-Never use @SpringBootApplication  along with @EnableAutoConfiguration(used with @ComponentScan). Opt only one by adding it in @Configuration class.
+
+
+-Auto-configuration is non-invasive:
+-to find out what auto-configuration is currently being applied, and why, start application with the --debug switch
+
+-To exclude any autoconfiguration use exclude attribute like in @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+-we can also control the list of auto-configuration classes to exclude by using the spring.autoconfigure.exclude property
+
+@ComponentScan -to find beans
+
+@AutoWire -to do constructor injection
+
+All of application components (@Component,@Service, @Repository, @Controller etc.) are automatically registered as Spring Beans.
+
+
+A single @SpringBootApplication annotation can be used to enable those three features:
+	@EnableAutoConfiguration - enable Spring Boot’s auto-configuration mechanism
+	@ComponentScan - enable @Component scan on the package where the application is located
+	@Configuration - Allow to register extra beans in the context or import additional configuration classes
+
+
+@SpringBootApplication also provides aliases to customize the attributes of @EnableAutoConfiguration and @ComponentScan.
+
+
+maven:run goal to quickly complile and run application.
+
+HotSwapping works out of the box as spring boot applications are plain java applications.
+
+Caching is disabled in dev-tools
+
+Cache options are usually configured by settings in application.properties file.
+
+--If don’t want property defaults to be applied we can set spring.devtools.addproperties to false in application.properties.
+
+Automatic Restart:
+Automatic restart works very well when used with LiveReload
+
+DevTools relies on the application context’s shutdown hook to close it during a restart. It does not work correctly if the shutdown hook is disabled
+(SpringApplication.setRegisterShutdownHook(false)).
+
+--To disable the logging of the report, set the following property: spring.devtools.restart.log-condition-evaluation-delta=false
+
+Excluding Resources:(Certain resources do not necessarily need to trigger a restart when they are changed.)
+
+If we want to keep those defaults and add additional exclusions, use the spring.devtools.restart.additional-exclude property instead.
+
+Watching Additional Paths:
+To do so, use the spring.devtools.restart.additionalpaths property to configure additional paths to watch for changes.
+
+Disabling Restart support: set the spring.devtools.restart.enabled System property to false before calling SpringApplication.run(…)
+
+To use a trigger file, set the spring.devtools.restart.trigger-file property to the path of trigger file.
+
+The spring-devtools.properties file can contain properties prefixed with restart.exclude and restart.include.
+
+do not want to start the LiveReload server when application runs,set the spring.devtools.livereload.enabled property to false.
+
+SpringBoot Features:
+
+SpringApplication
+
+Spring Boot provides numerous FailureAnalyzer implementations.
+
+$ java -jar myproject-0.0.1-SNAPSHOT.jar --debug enables debug...
+
+Customizing the Banner:
+
+banner.txt to customize banner.
+
+The SpringApplication.setBanner(…) method can be used if to generate
+a banner programmatically. Use the org.springframework.boot.Banner interface and
+implement printBanner() method.
+
+spring.main.banner-mode property to print banner in system.out console or in log or to off it.
+
+Customizing SpringApplication.
+
+03-Sep-2019:
+
+Flent Builder API
+	to build an ApplicationContext hierarchy (multiple contexts with a parent/child relationship)
+	The SpringApplicationBuilder lets you chain together multiple method calls and includes parent and child methods that let you create a hierarchy.
+	new SpringApplicationBuilder().sources(Parent.class).child(Application.class).bannerMode(Banner.Mode.OFF)
+.run(args);
+-------------------------------------------------------------------------------------------------------------------------------
+Configure JPA Properties
+
+Spring Data JPA Repositories
+
+#Spring Data repositories usually extend from the Repository or CrudRepository interfaces
+-------------------------------------------------------------------------------------------------------------------------------
+Data Access
+
+Configure a Custom DataSource:
+
+@Bean
+@ConfigurationProperties("app.datasource")
+public DataSource dataSource() {
+return DataSourceBuilder.create().build();
+}
+
+
+app.datasource.url=jdbc:mysql://localhost/test
+app.datasource.username=dbuser
+app.datasource.password=dbpass
+app.datasource.pool-size=30
+
+#to configure multiple data source refer reference guide.
+
+Use Spring Data Repositories
+
+#The spring.jpa.hibernate.ddl-auto is a special case, because, depending on runtime
+conditions, it has different defaults.
+
