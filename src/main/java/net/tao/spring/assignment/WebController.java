@@ -33,7 +33,14 @@ public class WebController {
 	public String addProduct(@ModelAttribute Product product, Model model) {
 		String result = productServices.addProduct(product);
 		model.addAttribute("result", result);
-		return "redirect:/";
+		if(result.equals("success")) {
+			return "redirect:/";
+		} else {
+			if(result.equals("duplicate")) {
+				model.addAttribute("errorMessage", "Duplicate error!");
+			}
+			return "/addProduct";
+		}
 	}
 
 	@GetMapping(value = "/updateProduct")

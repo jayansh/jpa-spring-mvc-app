@@ -1,28 +1,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-		<link rel="stylesheet"
-			href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-			integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-			crossorigin="anonymous"></script>
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
-		        $(".goback-action").click(function(){
+				$( "form" ).submit(function( event ) {
+					$("input.required[type=text]").each(function(){
+						if(!$( this ).val()){
+							$( this ).next("span").text("Required Field").show();
+							event.preventDefault();
+						} else {
+							$( this ).next("span").text("").hide();
+						}
+					})
+				});
+				$(".goback-action").click(function(){
 		        	var url = "/";
 		            $(location).attr('href',url);
 		        });
 			});
 		</script>
+		<style>
+		  p {
+		    margin: 0;
+		    color: blue;
+		  }
+		  div,p {
+		    margin-left: 10px;
+		  }
+		  span {
+		    color: red;
+		  }
+		</style>
 	</head>
 	<body>
+		<nav class="navbar navbar-inverse">
+	     <div class="container-fluid">
+	      <div class="navbar-header">
+	        <a class="navbar-brand" href="#">Tao.Net</a>
+	      </div>
+	      <ul class="nav navbar-nav">
+			<li>
+				<a href="/">List Products</a>
+			</li>
+			<li class="active"><a href="#">Add Product</a></li>
+		  </ul>
+	     </div>
+	  	</nav>
+		<div class="container">
 		<h3>Add Product</h3>
+		<span th:text="${errorMessage}"/></span>
 		<form action="#" th:action="@{/addProduct}" th:object="${product}" method="post">
 			<input type="hidden" id="status" name="status" value="Created"></input>
-    		<p>Product Id: <input type="text" th:field="*{productId}" /></p>
-        	<p>Name: <input type="text" th:field="*{productName}" /></p>
-        	<p>Description: <input type="text" th:field="*{description}" /></p>
-        	<p><input type="submit" value="Add" /> <input type="reset" value="Reset" /> <input type="button" value="GoBack" class="goback-action"/></p>
+    		<div class="form-group"><label for="productId">Product Id:</label> <input type="text" th:field="*{productId}" class="required" /><span class="error"></span></div>
+        	<div class="form-group"><label for="productName">Name:</label> <input type="text" th:field="*{productName}" class="required" /><span class="error"></span></div>
+        	<div class="form-group"><label for="description">Description:</label> <input type="text" th:field="*{description}" /></div>
+        	<p><input type="submit" value="Add" class="btn btn-primary"/> <input type="reset" value="Reset" class="btn btn-warning"/> <input type="button" value="GoBack" class="goback-action btn"/></p>
+        	</div>
     	</form>
+    	</div>
 	</body>
 </html>

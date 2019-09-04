@@ -1,11 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<script	src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<link rel="stylesheet"	href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-		crossorigin="anonymous"></script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
+		$( "form" ).submit(function( event ) {
+			$("input.required[type=text]").each(function(){
+				if(!$( this ).val()){
+					$( this ).next("span").text("Required Field").show();
+					event.preventDefault();
+				} else {
+					$( this ).next("span").text("").hide();
+				}
+			})
+		});
         $(".delete-product").click(function(){
         	var productId = $("input[name=productId]").val()
         	$("#productForm").attr('action', '/deleteProduct');
@@ -19,20 +30,35 @@
 	</script>
 </head>
 	<body>
+		<nav class="navbar navbar-inverse">
+	     <div class="container-fluid">
+	      <div class="navbar-header">
+	        <a class="navbar-brand" href="#">Tao.Net</a>
+	      </div>
+	      <ul class="nav navbar-nav">
+			<li class="active">
+				<a href="/">List Products</a>
+			</li>
+			<li><a href="/addProduct">Add Product</a></li>
+		  </ul>
+	     </div>
+	  	</nav>
+	  <div class="container">
 		<h3>Update Product</h3>
 		<form action="#" th:action="@{/updateProduct}" th:object="${product}" method="post" name="productForm" id="productForm">
-    		<p>Product Id: <input type="text" th:field="*{productId}" readonly/></p>
-        	<p>Name: <input type="text" th:field="*{productName}" /></p>
-        	<p>Status: <select th:field="*{status}">
+    		<div class="form-group form-control-plaintext"><label for="productId">Product Id:</label> <input type="text" th:field="*{productId}" readonly /></div>
+        	<div class="form-group"><label for="productName">Name:</label><input type="text" th:field="*{productName}" /></div>
+        	<div class="form-group"><label for="status">Status:</label> <select th:field="*{status}">
         			<option value="Created" >Created</option>
         			<option value="Approved">Approve</option>
         			<option value="Available">Available</option>
         			<option value="NotAvailable">NotAvailable</option>
-        		</select></p>
-        	<p>Description: <input type="text" th:field="*{description}" /></p>
-        	<p><input type="submit" value="Done" /> 
-        		<input type="reset" value="Cancel" class="cancel-action" />
-        		<input  type="button" value="Delete" class="delete-product"/></p>
+        		</select></div>
+        	<div class="form-group"><label for="description">Description:</label> <input type="text" th:field="*{description}" /></div>
+        	<p><input type="submit" class="btn btn-primary" value="Done" /> 
+        		<input type="reset" value="Cancel" class="cancel-action btn btn-default" />
+        		<input  type="button" value="Delete" class="delete-product btn  btn-danger"/></p>
     	</form>
+      </div>
 	</body>
 </html>

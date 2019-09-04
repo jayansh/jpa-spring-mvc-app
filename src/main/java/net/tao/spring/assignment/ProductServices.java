@@ -28,6 +28,9 @@ public class ProductServices {
 	 */
 
 	public String addProduct(Product product) {
+		if(getProductById(product.getProductId()).isPresent()) {
+			return "duplicate";
+		}
 		productRepository.save(product);
 		return "success";
 	}
